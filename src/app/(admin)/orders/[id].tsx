@@ -12,7 +12,7 @@ import OrderItemListItem from "@/src/components/OrderItemList";
 import OrderListItem from "../../../components/OrderListItem";
 import { OrderStatusList } from "@/src/types";
 import Colors from "@/src/constants/Colors";
-import { useOrderDetails } from "@/src/api/orders";
+import { useOrderDetails, useUpdateOrder } from "@/src/api/orders";
 import { useEffect } from "react";
 
 const OrderDetailScreen = () => {
@@ -21,8 +21,11 @@ const OrderDetailScreen = () => {
   const { id } = useLocalSearchParams();
 
   const { data: order, error, isLoading } = useOrderDetails(id!.toString());
+  const { mutate: updateOrder } = useUpdateOrder();
 
-  console.log(order);
+  const updateStatus = (status: string) => {
+    updateOrder({ id: id?.toString(), updatedFields: { status } });
+  };
 
   if (!order) {
     return <Text>Order not found!</Text>;
@@ -53,7 +56,7 @@ const OrderDetailScreen = () => {
               {OrderStatusList.map((status) => (
                 <Pressable
                   key={status}
-                  onPress={() => console.warn("Update status")}
+                  onPress={() => updateStatus(status)}
                   style={{
                     borderColor: Colors.light.tint,
                     borderWidth: 1,

@@ -10,11 +10,6 @@ const OrderDetailScreen = () => {
   const { id } = useLocalSearchParams();
 
   const { data: order, error, isLoading } = useOrderDetails(id!.toString());
-  /*   const {
-    data: orderItems,
-    error: errorItems,
-    isLoading: isLoadingItems,
-  } = useOrderDetailsItems(id.toString()); */
 
   if (!order) {
     return <Text>Order not found!</Text>;
